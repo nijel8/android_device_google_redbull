@@ -52,6 +52,7 @@ BOARD_KERNEL_CMDLINE += i2c_qcom_geni.async_probe=1
 BOARD_KERNEL_CMDLINE += st21nfc.async_probe=1
 BOARD_KERNEL_CMDLINE += spmi_pmic_arb.async_probe=1
 BOARD_KERNEL_CMDLINE += ufs_qcom.async_probe=1
+BOARD_KERNEL_CMDLINE += twrpfastboot=1
 
 BOARD_KERNEL_BASE        := 0x00000000
 BOARD_KERNEL_PAGESIZE    := 4096
@@ -101,6 +102,15 @@ TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 TARGET_RECOVERY_UI_LIB := \
     librecovery_ui_pixel \
     libfstab
+
+TARGET_RECOVERY_TWRP_LIB := \
+    librecovery_twrp_redbull \
+    libnos_citadel_for_recovery \
+    libnos_for_recovery \
+    liblog \
+    libbootloader_message \
+    libfstab \
+    libext4_utils
 
 # Enable chain partition for system.
 BOARD_AVB_VBMETA_SYSTEM := system system_ext product
@@ -517,12 +527,7 @@ TARGET_BOARD_NAME_DIR := device/google/$(TARGET_BOOTLOADER_BOARD_NAME)
 TARGET_BOARD_INFO_FILE := $(TARGET_BOARD_NAME_DIR)/board-info.txt
 TARGET_BOARD_COMMON_PATH := $(TARGET_BOARD_NAME_DIR)/sm7250
 
-# Common kernel file handling
-ifneq (,$(filter $(TARGET_DEVICE),bramble redfin))
-    TARGET_KERNEL_DIR := device/google/redbull-kernel
-else
-    TARGET_KERNEL_DIR := $(TARGET_BOARD_NAME_DIR:%/=%)-kernel
-endif
+TARGET_KERNEL_DIR := device/google/barbet/prebuilts/kernel
 
 # DTBO partition definitions
 ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
@@ -630,3 +635,30 @@ BOARD_BUILD_VENDOR_RAMDISK_IMAGE := true
 
 # Testing related defines
 BOARD_PERFSETUP_SCRIPT := platform_testing/scripts/perf-setup/b5r3-setup.sh
+
+# TWRP
+TW_THEME := portrait_hdpi
+BOARD_SUPPRESS_SECURE_ERASE := true
+TARGET_RECOVERY_QCOM_RTC_FIX := true
+TW_INPUT_BLACKLIST := "hbtp_vm"
+TW_DEFAULT_BRIGHTNESS := "80"
+# nijel8
+#TW_INCLUDE_CRYPTO := true
+TW_EXCLUDE_DEFAULT_USB_INIT := true
+TW_RECOVERY_ADDITIONAL_RELINK_BINARY_FILES += out/target/product/$(PRODUCT_HARDWARE)/system/bin/strace
+TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += out/target/product/$(PRODUCT_HARDWARE)/system/lib64/android.hardware.authsecret@1.0.so
+TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += out/target/product/$(PRODUCT_HARDWARE)/system/lib64/android.hardware.oemlock@1.0.so
+TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += out/target/product/$(PRODUCT_HARDWARE)/vendor/lib/hw/bootctrl.msmnile.so
+TWRP_INCLUDE_LOGCAT := true
+TARGET_USES_LOGD := true
+# MTP will not work until we update it to support ffs
+#TW_EXCLUDE_MTP := true
+TW_USE_TOOLBOX := true
+TW_NO_HAPTICS := true
+TW_INCLUDE_REPACKTOOLS := true
+#TW_EXTRA_LANGUAGES := true
+TW_LIBTAR_DEBUG := true
+TW_INCLUDE_RESETPROP := true
+TW_CUSTOM_CPU_TEMP_PATH := /sys/devices/virtual/thermal/tz-by-name/cpu-0-0-step/temp
+# modprobe seems unreliable so using insmod directly
+#TW_LOAD_VENDOR_MODULES := "ftm5.ko sec_touch.ko"
