@@ -97,20 +97,11 @@ endif
 
 # Partitions (listed in the file) to be wiped under recovery.
 TARGET_RECOVERY_WIPE := device/google/redbull/recovery.wipe
-TARGET_RECOVERY_FSTAB := device/google/redbull/fstab.hardware
+#TARGET_RECOVERY_FSTAB := device/google/redbull/fstab.hardware
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 TARGET_RECOVERY_UI_LIB := \
     librecovery_ui_pixel \
     libfstab
-
-TARGET_RECOVERY_TWRP_LIB := \
-    librecovery_twrp_redbull \
-    libnos_citadel_for_recovery \
-    libnos_for_recovery \
-    liblog \
-    libbootloader_message \
-    libfstab \
-    libext4_utils
 
 # Enable chain partition for system.
 BOARD_AVB_VBMETA_SYSTEM := system system_ext product
@@ -644,6 +635,7 @@ TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_DEFAULT_BRIGHTNESS := "80"
 TW_INCLUDE_CRYPTO := true
 TW_EXCLUDE_DEFAULT_USB_INIT := true
+TW_INCLUDE_NTFS_3G := true
 TW_RECOVERY_ADDITIONAL_RELINK_BINARY_FILES += out/target/product/$(PRODUCT_HARDWARE)/system/bin/strace
 TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += out/target/product/$(PRODUCT_HARDWARE)/system/lib64/android.hardware.authsecret@1.0.so
 TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += out/target/product/$(PRODUCT_HARDWARE)/system/lib64/android.hardware.oemlock@1.0.so
@@ -655,6 +647,9 @@ TARGET_USES_LOGD := true
 TW_USE_TOOLBOX := true
 TW_NO_HAPTICS := true
 TW_INCLUDE_REPACKTOOLS := true
+LZMA_RAMDISK_TARGETS := recovery,boot
+TW_OVERRIDE_SYSTEM_PROPS := \
+    "ro.build.product;ro.build.fingerprint=ro.system.build.fingerprint;ro.build.version.incremental;ro.product.name=ro.product.system.name"
 #TW_EXTRA_LANGUAGES := true
 TW_LIBTAR_DEBUG := true
 TW_INCLUDE_RESETPROP := true
@@ -663,3 +658,5 @@ TW_CUSTOM_CPU_TEMP_PATH := /sys/devices/virtual/thermal/tz-by-name/cpu-0-0-step/
 #TW_LOAD_VENDOR_MODULES := "ftm5.ko sec_touch.ko"
 PLATFORM_VERSION := 127
 PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
+PLATFORM_SECURITY_PATCH := 2127-12-31
+LZMA_RAMDISK_TARGETS := recovery,boot
