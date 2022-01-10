@@ -592,8 +592,8 @@ TARGET_RECOVERY_QCOM_RTC_FIX := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_DEFAULT_BRIGHTNESS := "80"
 TW_INCLUDE_CRYPTO := true
-TW_EXCLUDE_APEX := true
-#TW_ADDITIONAL_APEX_FILES := "com.google.android.tzdata3.apex com.google.android.art.apex com.google.android.media.apex"
+#TW_EXCLUDE_APEX := true
+TW_ADDITIONAL_APEX_FILES := "com.google.android.tzdata3.apex com.google.android.art.apex com.google.android.media.apex"
 TW_EXCLUDE_DEFAULT_USB_INIT := true
 TW_INCLUDE_NTFS_3G := true
 TW_RECOVERY_ADDITIONAL_RELINK_BINARY_FILES += out/target/product/$(PRODUCT_HARDWARE)/system/bin/strace
@@ -611,7 +611,7 @@ LZMA_RAMDISK_TARGETS := recovery,boot
 TW_OVERRIDE_SYSTEM_PROPS := \
     "ro.build.product;ro.build.fingerprint=ro.system.build.fingerprint;ro.build.version.incremental;ro.product.name=ro.product.system.name"
 #TW_EXTRA_LANGUAGES := true
-TW_LIBTAR_DEBUG := true
+#TW_LIBTAR_DEBUG := true
 TW_INCLUDE_RESETPROP := true
 TW_CUSTOM_CPU_TEMP_PATH := /sys/devices/virtual/thermal/tz-by-name/cpu-0-0-step/temp
 # modprobe seems unreliable so using insmod directly
