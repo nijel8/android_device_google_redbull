@@ -605,7 +605,7 @@ TARGET_USES_LOGD := true
 # MTP will not work until we update it to support ffs
 #TW_EXCLUDE_MTP := true
 TW_USE_TOOLBOX := true
-TW_NO_HAPTICS := true
+TW_SUPPORT_INPUT_AIDL_HAPTICS := true
 TW_INCLUDE_REPACKTOOLS := true
 LZMA_RAMDISK_TARGETS := recovery,boot
 TW_OVERRIDE_SYSTEM_PROPS := \
