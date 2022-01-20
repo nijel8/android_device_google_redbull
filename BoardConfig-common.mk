@@ -64,36 +64,21 @@ BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_DTBOIMG_PARTITION_SIZE := 16777216
 
 TARGET_NO_KERNEL := false
-BOARD_USES_GENERIC_KERNEL_IMAGE := true
-BOARD_MOVE_GSI_AVB_KEYS_TO_VENDOR_BOOT := true
-ifneq ($(PRODUCT_BUILD_VENDOR_BOOT_IMAGE),false)
-BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
-endif
+BOARD_USES_RECOVERY_AS_BOOT := true
 
 BOARD_USES_METADATA_PARTITION := true
 
 AB_OTA_UPDATER := true
 
-ifneq ($(PRODUCT_BUILD_SYSTEM_IMAGE),false)
-AB_OTA_PARTITIONS += system
-AB_OTA_PARTITIONS += vbmeta_system
-endif
-ifneq ($(PRODUCT_BUILD_PRODUCT_IMAGE),false)
-AB_OTA_PARTITIONS += product
-endif
-ifneq ($(PRODUCT_BUILD_SYSTEM_EXT_IMAGE),false)
-AB_OTA_PARTITIONS += system_ext
-endif
-ifneq ($(PRODUCT_BUILD_BOOT_IMAGE),false)
-AB_OTA_PARTITIONS += boot
-endif
-ifneq ($(PRODUCT_BUILD_VENDOR_BOOT_IMAGE),false)
-AB_OTA_PARTITIONS += vendor_boot
-AB_OTA_PARTITIONS += dtbo
-endif
-ifneq ($(PRODUCT_BUILD_VBMETA_IMAGE),false)
-AB_OTA_PARTITIONS += vbmeta
-endif
+AB_OTA_PARTITIONS += \
+    boot \
+    vendor_boot \
+    system \
+    system_ext \
+    product \
+    vbmeta \
+    vbmeta_system \
+    dtbo
 
 # Partitions (listed in the file) to be wiped under recovery.
 TARGET_RECOVERY_WIPE := device/google/redbull/recovery.wipe
@@ -663,4 +648,3 @@ TW_LOAD_VENDOR_MODULES := "ftm5.ko sec_touch.ko drv2624.ko"
 PLATFORM_VERSION := 127
 PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
 PLATFORM_SECURITY_PATCH := 2127-12-31
-LZMA_RAMDISK_TARGETS := recovery,boot
